@@ -4,15 +4,13 @@
     import Dossier from "./Dossier.svelte";
     import FriendMap from "./FriendMap.svelte";
 
-    let id;
-    let data;
+    let id = '';
+    let data = fetchData();
 
     $: window.location.hash = id ? id : '';
 
-    async function hashChange() {
-        if (id === '') return;
-
-        data = await fetch(`https://darkstalker.herokuapp.com/api/v1/stalk/${id}`)
+    async function fetchData() {
+        return fetch(`https://darkstalker.herokuapp.com/api/v1/stalk/${id}`)
                 .then(r => r.json())
                 .then(r => {
                     if (r.hasOwnProperty('error')) {
@@ -24,6 +22,12 @@
                 .catch(_ => null);
     }
 
+    async function hashChange() {
+        if (id === '') return;
+
+        data = fetchData();
+    }
+
     onMount(() => id = window.location.hash);
     onMount(hashChange);
 </script>
@@ -33,14 +37,20 @@
 <Nav bind:value={id}/>
 
 <main>
-    <div class="dossier-container">
-        {#if data}
+    {#await data}
+    {:then data}
+        <div class="dossier-container">
             <Dossier user={data.user} friendsCount={data.friends.length}/>
-        {/if}
-    </div>
-    <div class="friend-map-container">
-        <FriendMap/>
-    </div>
+        </div>
+        <div class="friend-map-container">
+            <FriendMap user={
+            {id: data.user.id,
+             name:`${data.user.first_name} ${data.user.last_name}`,
+             photo: data.user.photo_100}
+            } friends={data.friends}
+            bind:value={id}/>
+        </div>
+    {/await}
 </main>
 
 <style>
