@@ -1,8 +1,10 @@
 <script>
     import {onMount} from 'svelte';
+    import {fade} from 'svelte/transition';
     import Nav from "./Nav.svelte";
     import Dossier from "./Dossier.svelte";
     import FriendMap from "./FriendMap.svelte";
+    import Documentation from "./Documentation.svelte"
 
     let id = '';
     let data = fetchData();
@@ -37,20 +39,24 @@
 <Nav bind:value={id}/>
 
 <main>
-    {#await data}
-    {:then data}
-        <div class="dossier-container">
-            <Dossier user={data.user} friendsCount={data.friends.length}/>
-        </div>
-        <div class="friend-map-container">
-            <FriendMap user={
+    {#if id === ''}
+        <Documentation/>
+    {:else}
+        {#await data}
+        {:then data}
+            <div transition:fade class="dossier-container">
+                <Dossier user={data.user} friendsCount={data.friends.length}/>
+            </div>
+            <div class="friend-map-container">
+                <FriendMap user={
             {id: data.user.id,
              name:`${data.user.first_name} ${data.user.last_name}`,
              photo: data.user.photo_100}
             } friends={data.friends}
-            bind:value={id}/>
-        </div>
-    {/await}
+                           bind:value={id}/>
+            </div>
+        {/await}
+    {/if}
 </main>
 
 <style>

@@ -1,4 +1,7 @@
 <script>
+    import Icon from 'svelte-awesome';
+    import {github} from 'svelte-awesome/icons';
+
     import Logo from "./Logo.svelte";
 
     export let value = '';
@@ -25,6 +28,14 @@
         margin: 0;
         width: 100%;
     }
+
+    a {
+        color: white;
+    }
+
+    a:hover {
+        color: gray;
+    }
 </style>
 
 <header>
@@ -35,5 +46,8 @@
                 <input bind:value={value} id="type" placeholder="Type VK user ID here...">
             </label>
         </div>
+        <a href="https://github.com/cochegarka/darkstalker-frontend" target="_blank">
+            <Icon style="margin: 0px 8px;" data={github} scale="2"/>
+        </a>
     </nav>
 </header>
