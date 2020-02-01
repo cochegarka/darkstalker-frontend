@@ -43,16 +43,16 @@
         <Documentation/>
     {:else}
         {#await data}
-        {:then data}
+        {:then _data}
             <div transition:fade class="dossier-container">
-                <Dossier user={data.user} friendsCount={data.friends.length}/>
+                <Dossier user={_data.user} friendsCount={_data.friends.length}/>
             </div>
             <div class="friend-map-container">
                 <FriendMap user={
-            {id: data.user.id,
-             name:`${data.user.first_name} ${data.user.last_name}`,
-             photo: data.user.photo_100}
-            } friends={data.friends}
+            {id: _data.user.id,
+             name:`${_data.user.first_name} ${_data.user.last_name}`,
+             photo: _data.user.photo_100}
+            } friends={_data.friends}
                            bind:value={id}/>
             </div>
         {/await}
