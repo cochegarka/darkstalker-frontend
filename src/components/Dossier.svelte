@@ -5,7 +5,7 @@
     export let user;
     export let friendsCount;
 
-    let name = `${user.first_name || ''} ${user.last_name || ''}`;
+    $: name = `${user.first_name || ''} ${user.last_name || ''}`;
     let sex = `${(() => {
         switch (user.sex) {
             case 1:
