@@ -69,6 +69,7 @@
     .dossier-container {
         flex: 1;
         width: 100%;
+        min-width: 320px;
         max-width: 30vw;
         border-right: 1px solid #787878;
         background-color: #bdbdbd;
